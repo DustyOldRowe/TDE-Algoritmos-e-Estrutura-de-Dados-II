@@ -87,3 +87,11 @@ Essa função faz a remoção lógica de registros dos arquivos de dados.
 
 O usuario deve inserir a chave do registro que deseja deletar.
 Primeiramente é procurado o endereço do registro que se deseje deletar, isto é feito através da função indexSearch(), caso o registro seja encontrado, é escrito na porção de bytes reservado para a remoção logica a palavra "ELIMINADO", registrando que aquele registro é para ser ignorado. Após isso, o registro é removido dos arquivos de indice, realizando isso após cada operação de remoção.
+
+## Arquivo auxFuncs.c
+Arquivo que guarda funções auxiliares para serem usadas por outros arquivos.
+
+## Código para compilação
+```
+gcc TDEVendas.c auxFuncs.c dataCleaner.c dataCreate.c dataOrdena.c indiceStore.c queries.c operacoes.c -o Vendas.exe
+```
