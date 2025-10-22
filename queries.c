@@ -51,18 +51,17 @@ long indexSearch(char *key, char *fileChar, char *indexChar1,
   long pos_inicio;
   long pos_ultimo;
 
-  while (fread(buffer, sizeof(buffer), 1, index3)) {
 
-    if (strcmp(key, buffer) < 0) {
+  while (fread(buffer, sizeof(buffer), 1, index3)) {
+    if (strcmp(key, buffer) <= 0) {
       fread(end, sizeof(end), 1, index3);
       pos_inicio = strtol(end, &ptr, 10);
-      pos_ultimo = pos_inicio + (10 - 1) * 48;
+      pos_ultimo = (pos_inicio + (10 - 1) * 48);
 
       fseek(index2, pos_inicio, SEEK_SET);
 
       while (fread(buffer, sizeof(buffer), 1, index2)) {
         long current = ftell(index2);
-        
         if (strncmp(key, buffer, sizeof(buffer)) <= 0) {
           fread(end, sizeof(end), 1, index2);
 

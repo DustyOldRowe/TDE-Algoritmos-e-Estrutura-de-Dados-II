@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdbool.h>
+#include <string.h>
 #include "headers/dataCleaner.h"
 #include "headers/dataCreate.h"
 #include "headers/dataOrdena.h"
@@ -67,9 +68,12 @@ int main() {
   loadData();
   
   int option;
-  char *choice;
-  char *joia, *preco;
-  char *codOut, *gnr;
+  char choice[24];
+  char joia[24], preco[24];
+  char codOut[24], gnr[24];
+  char buffer[120];
+  long add = 0;
+  FILE *file;
 
   do {
     printf("\nPROTOTIPO PROJETO DADOS\n");
@@ -101,6 +105,7 @@ int main() {
                 "jewelry.ring, jewelry.bracelet,\n"
                 "jewelry.souvenir, jewelry.brooch)\n");
         fgets(choice, sizeof(choice), stdin);
+        choice[strcspn(choice, "\n")] = '\0';
 
         quantType(choice);
 
@@ -109,6 +114,7 @@ int main() {
         printf("Insira o genero que estar buscando: \n"
                "(opções: f, m)\n");
         fgets(choice, sizeof(choice), stdin);
+        choice[strcspn(choice, "\n")] = '\0';
 
         demoGenero(choice);
 
@@ -125,30 +131,59 @@ int main() {
         printf ("Insira codigo da entrada que queres buscar: \n"
                 "(modelo: 1839772374128394799)\n");
         fgets(choice, sizeof(choice), stdin);
-        indexSearch(choice, "data/joias.bin", "data/joias_indice.bin", 
+        choice[strcspn(choice, "\n")] = '\0';
+        
+        add = indexSearch(choice, "data/joias.bin", "data/joias_indice.bin", 
          "data/joias_indice_lvl2.bin", "data/joias_indice_lvl3.bin");
+
+        if (add != -1) {
+          file = fopen("data/joias.bin", "rb");
+          fseek(file, add, SEEK_SET);
+          fread(buffer, 24, 5, file);
+          
+          for (int i = 0; i < 5; i++) {
+              printf("%.*s ", 24, buffer + (i * 24));
+          }
+        }
+        fclose(file);
 
       break;
       case 7:
         printf ("Insira codigo da entrada que queres buscar: \n"
                 "(modelo: 1839772374128394799)\n");
         fgets(choice, sizeof(choice), stdin);
-        indexSearch(choice, "data/compras.bin", "data/compras_indice.bin", 
+        choice[strcspn(choice, "\n")] = '\0';
+        
+        add = indexSearch(choice, "data/compras.bin", "data/compras_indice.bin", 
          "data/compras_indice_lvl2.bin", "data/compras_indice_lvl3.bin");
+        
+        if (add != -1) {
+          file = fopen("data/compras.bin", "rb");
+          fseek(file, add, SEEK_SET);
+          fread(buffer, 24, 5, file);
+          
+          for (int i = 0; i < 5; i++) {
+              printf("%.*s ", 24, buffer + (i * 24));
+          }
+        }
+        fclose(file);
 
       break;
       case 8:
         printf ("Insira codigo da nova entrada: \n"
                 "(modelo: 1839772374128394799)\n");
         fgets(choice, sizeof(choice), stdin);
+        choice[strcspn(choice, "\n")] = '\0';
         
         printf ("Insira o tipo de joia da nova entrada: \n"
                 "(modelo: electronics.clocks, jewelry.pendant)\n");
         fgets(joia, sizeof(joia), stdin);
+        joia[strcspn(joia, "\n")] = '\0';
         
         printf ("Insira o preço da nova entrada: \n"
                 "(modelo: 1000.99)\n");
         fgets(preco, sizeof(preco), stdin);
+        preco[strcspn(preco, "\n")] = '\0';
         
         insertData("data/joias.bin", choice, joia, preco, 
                    "data/joias_indice.bin", "data/joias_indice_lvl2.bin", 
@@ -159,14 +194,17 @@ int main() {
         printf ("Insira codigo da nova entrada: \n"
                 "(modelo: 1839772374128394799)\n");
         fgets(choice, sizeof(choice), stdin);
+        choice[strcspn(choice, "\n")] = '\0';
         
         printf ("Insira o codigo externo da nova entrada: \n"
                 "(modelo: 1839772374128394799)\n");
         fgets(codOut, sizeof(codOut), stdin);
+        codOut[strcspn(codOut, "\n")] = '\0';
         
         printf ("Insira o genero do comprador da nova entrada: \n"
                 "(modelo: f ou m)\n");
         fgets(gnr, sizeof(gnr), stdin);
+        gnr[strcspn(gnr, "\n")] = '\0';
         
         insertData("data/compras.bin", choice, codOut, gnr, 
                    "data/compras_indice.bin", "data/compras_indice_lvl2.bin", 
@@ -177,6 +215,7 @@ int main() {
         printf ("Insira codigo da entrada que deseja remover: \n"
                 "(modelo: 1839772374128394799)\n");
         fgets(choice, sizeof(choice), stdin);
+        choice[strcspn(choice, "\n")] = '\0';
         
         removeData("data/joias.bin", choice, "data/joias_indice.bin", 
                    "data/joias_indice_lvl2.bin", "data/joias_indice_lvl3.bin");
@@ -186,6 +225,7 @@ int main() {
         printf ("Insira codigo da entrada que deseja remover: \n"
                 "(modelo: 1839772374128394799)\n");
         fgets(choice, sizeof(choice), stdin);
+        choice[strcspn(choice, "\n")] = '\0';
         
         removeData("data/compras.bin", choice, "data/compras_indice.bin", 
                    "data/compras_indice_lvl2.bin", "data/compras_indice_lvl3.bin");
