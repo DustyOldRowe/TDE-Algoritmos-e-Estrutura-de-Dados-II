@@ -77,8 +77,6 @@ O usuario deve inserir as informações pertinentes para cada arquivo de dados a
 Primeiramente ela chama a função indexSearch() para saber se a chave inserida pelo usuario já existe no arquivo de dados. Confirmada sua inexistencia ele vai percorrer o arquivo de dados extensivamente para conferir se a nova chave deve ser inserida no meio do arquivo, caso seja o caso, na porção de bytes reservada para elo se insere a posição fisica para o fim do arquivo, após isso é feita a acrescentação da nova entrada no final do arquivo.
 Os arquivos de indice são refeitos por completo em cada adição de um novo registro.
 
-- Funcionalidade para atualizar elo em caso de novas adições, infelizmente, não foi implementada(eu não soube como).
-
 ## removeData()
 ```
 Arquivo operacoes.c
